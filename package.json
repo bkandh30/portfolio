@@ -6,7 +6,14 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "typecheck": "tsc --noEmit",
+    "lint": "prettier --check \"**/*.{ts,js,mjs,cjs,json,css,yml,yaml}\"",
+    "format": "prettier --write \"**/*.{ts,js,mjs,cjs,json,css,yml,yaml}\"",
+    "content:validate": "tsx ./scripts/validate-content.ts",
+    "qa:matrix": "tsx ./scripts/qa-matrix.ts",
+    "quality": "pnpm check && pnpm typecheck && pnpm lint && pnpm content:validate && pnpm build && pnpm qa:matrix"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
