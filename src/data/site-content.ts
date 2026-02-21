@@ -70,6 +70,88 @@ export const experienceSectionContent: {
   ],
 };
 
+type SkillGroupIcon = 'code' | 'cloud' | 'layers' | 'database' | 'terminal';
+
+interface SkillGroup {
+  title: string;
+  icon: SkillGroupIcon;
+  skills: string[];
+  span: string;
+}
+
+export const skillsSectionContent: {
+  heading: string;
+  intro: string;
+  groups: SkillGroup[];
+} = {
+  heading: 'Skills',
+  intro: 'The languages, frameworks, and platforms I use to deliver production systems.',
+  groups: [
+    {
+      title: 'Languages',
+      icon: 'code',
+      skills: ['Java', 'JavaScript', 'TypeScript', 'Golang', 'Rust', 'Python', 'SQL'],
+      span: 'md:col-span-2',
+    },
+    {
+      title: 'Frameworks & Libraries',
+      icon: 'layers',
+      skills: [
+        'HTML',
+        'CSS',
+        'Spring Boot',
+        'Hibernate',
+        'React.js',
+        'Redux',
+        'Next.js',
+        'TailwindCSS',
+        'Node.js',
+        'Express.js',
+        'FastAPI',
+        'Warp',
+      ],
+      span: 'md:col-span-1',
+    },
+    {
+      title: 'Cloud & DevOps',
+      icon: 'cloud',
+      skills: [
+        'AWS',
+        'Docker',
+        'Git/GitHub',
+        'Linux',
+        'GitHub Actions',
+        'Jenkins',
+        'CI/CD',
+        'Terraform',
+      ],
+      span: 'md:col-span-1',
+    },
+    {
+      title: 'Databases & Tools',
+      icon: 'database',
+      skills: ['PostgreSQL', 'MySQL', 'Redis', 'MongoDB', 'ORM'],
+      span: 'md:col-span-1',
+    },
+    {
+      title: 'Testing & SDLC',
+      icon: 'terminal',
+      skills: [
+        'JUnit',
+        'Mockito',
+        'Selenium',
+        'Vitest',
+        'Unit Testing',
+        'Integration Testing',
+        'Jira',
+        'Scrum',
+        'Agile',
+      ],
+      span: 'md:col-span-1',
+    },
+  ],
+};
+
 export const footerContent = {
   technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
   fonts: ['Instrument Seriff', 'IBM Plex Sans', 'JetBrains Mono'],
