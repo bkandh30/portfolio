@@ -1,0 +1,26 @@
+---
+import { footerContent } from '@/data/site-content';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 pb-4">
+  <div class="mx-auto max-w-2xl px-5">
+    <div class="border-t border-border-subtle pt-8">
+      <p class="text-xs text-text-muted leading-relaxed text-center">
+        Built with
+        <span class="text-text-secondary">{footerContent.technologies[0]}</span> &
+        <span class="text-text-secondary">{footerContent.technologies[1]}</span>,
+        styled with
+        <span class="text-text-secondary">{footerContent.technologies[2]}</span>.
+        Set in
+        <span class="text-text-secondary">{footerContent.fonts[0]}</span>,
+        <span class="text-text-secondary">{footerContent.fonts[1]}</span> &
+        <span class="text-text-secondary">{footerContent.fonts[2]}</span>.
+      </p>
+      <p class="mt-2 text-xs text-text-muted text-center">
+        &copy; {year} Bhavya Kandhari. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
