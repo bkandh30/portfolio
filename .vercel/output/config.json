@@ -1,0 +1,43 @@
+{
+	"version": 3,
+	"routes": [
+		{
+			"src": "^/blog/java$",
+			"headers": {
+				"Location": "/blog/topic/java"
+			},
+			"status": 301
+		},
+		{
+			"src": "^/blog/projects-deep-dive$",
+			"headers": {
+				"Location": "/blog/topic/projects-deep-dive"
+			},
+			"status": 301
+		},
+		{
+			"src": "^/blog/research-papers$",
+			"headers": {
+				"Location": "/blog/topic/research-papers"
+			},
+			"status": 301
+		},
+		{
+			"src": "^/blog/system-design$",
+			"headers": {
+				"Location": "/blog/topic/system-design"
+			},
+			"status": 301
+		},
+		{
+			"handle": "filesystem"
+		},
+		{
+			"src": "^/_astro/(.*)$",
+			"headers": {
+				"cache-control": "public, max-age=31536000, immutable"
+			},
+			"continue": true
+		}
+	]
+}
