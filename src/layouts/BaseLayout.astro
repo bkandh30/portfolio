@@ -1,3 +1,157 @@
 ---
 import '@/styles/global.css';
+// import BottomNav from '@/components/BottomNav.astro';
+// import Footer from '@/components/Footer.astro';
+// import { heroContent } from '@/data/site-content';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonicalPath?: string;
+  articlePublishedTime?: Date | string;
+  articleModifiedTime?: Date | string;
+  articleTags?: string[];
+}
+
+const {
+  title,
+  description = 'Bhavya Kandhari — Software Engineer specializing in full-stack development, cloud computing, and distributed systems.',
+  ogImage = '/og/default-og.svg',
+  ogType = 'website',
+  canonicalPath,
+  articlePublishedTime,
+  articleModifiedTime,
+  articleTags = [],
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath ?? Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+const toIsoDate = (value: Date | string | undefined) => {
+  if (!value) return undefined;
+  return value instanceof Date ? value.toISOString() : new Date(value).toISOString();
+};
+const publishedTime = toIsoDate(articlePublishedTime);
+const modifiedTime = toIsoDate(articleModifiedTime);
+const isHomepage = Astro.url.pathname === '/';
 ---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.gstatic.com/s/instrumentserif/v4/jizBRFtNs2ka8fI8OXFKGUVskvlCOC_R.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="https://fonts.gstatic.com/s/ibmplexsans/v19/zYXgKVElMYYaJe8bpLHnCwDKhdHeFaxO.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- <meta name="author" content={heroContent.name} /> -->
+    <link rel="canonical" href={canonicalUrl.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <!-- <meta property="og:site_name" content={heroContent.name} /> -->
+    <meta property="og:url" content={canonicalUrl.href} />
+    <meta property="og:image" content={ogImageUrl} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    {ogType === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime} />
+    )}
+    {ogType === 'article' && articleTags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- RSS -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Bhavya Kandhari - Blog RSS"
+      href="/rss.xml"
+    />
+
+    <!-- Structured Data -->
+    <!-- <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Person',
+            '@id': `${Astro.site}#person`,
+            name: heroContent.name,
+            jobTitle: heroContent.role,
+            url: Astro.site?.toString(),
+            sameAs: [heroContent.links.github, heroContent.links.linkedIn],
+            email: heroContent.links.email,
+          },
+          {
+            '@type': 'WebSite',
+            '@id': `${Astro.site}#website`,
+            name: heroContent.name,
+            url: Astro.site?.toString(),
+            description,
+          },
+        ],
+      })}
+    /> -->
+
+    <meta name="theme-color" content="#111318" />
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    {isHomepage && <div id="spotlight" class="spotlight" aria-hidden="true"></div>}
+
+    <main id="main-content" class="main-content">
+      <slot />
+
+      <!-- <Footer /> -->
+    </main>
+
+    <!-- <BottomNav /> -->
+
+    {isHomepage && (
+      <script is:inline>
+        (function() {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+          if (!window.matchMedia('(min-width: 1024px)').matches) return;
+          var el = document.getElementById('spotlight');
+          if (!el) return;
+          var raf = 0;
+          document.addEventListener('mousemove', function(e) {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(function() {
+              el.style.setProperty('--spot-x', e.clientX + 'px');
+              el.style.setProperty('--spot-y', e.clientY + 'px');
+              el.style.opacity = '1';
+            });
+          });
+          document.addEventListener('mouseleave', function() {
+            el.style.opacity = '0';
+          });
+        })();
+      </script>
+    )}
+  </body>
+</html>
