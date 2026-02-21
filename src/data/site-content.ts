@@ -23,6 +23,53 @@ export const aboutSectionContent = {
   ],
 };
 
+interface ExperienceItem {
+  id: string;
+  company: string;
+  role: string;
+  dateRange: string;
+  description: string;
+  scope: string[];
+}
+
+export const experienceSectionContent: {
+  heading: string;
+  intro: string;
+  items: ExperienceItem[];
+} = {
+  heading: 'Experience',
+  intro: 'Roles where I shipped backend infrastructure, automation, and developer tooling.',
+  items: [
+    {
+      id: 'liberty-engineer',
+      company: 'Liberty Mutual Insurance',
+      role: 'Software Engineer',
+      dateRange: '2025 - Present',
+      description:
+        'Supporting claims and policy workflows by maintaining and optimizing reliable backend infrastructure.',
+      scope: ['Backend Systems', 'Workflow Automation', 'Reliability'],
+    },
+    {
+      id: 'asu-gsa',
+      company: 'Ira A Fulton School of Engineering',
+      role: 'Graduate Student Assitant',
+      dateRange: '2024 - 2025',
+      description:
+        'Taught Robotics and IoT at youth camps and graded coursework for distributed systems and software engineering classes (CSE445 & CSE446).',
+      scope: ['Distributed Systems', 'Cloud Computing', 'Robotics & IoT'],
+    },
+    {
+      id: 'ey-engineer',
+      company: 'Ernst & Young (EY)',
+      role: 'Associate Software Engineer',
+      dateRange: '2021 - 2023',
+      description:
+        'Developed an internal document management system that significantly reduced operational overhead for multiple enterprise teams.',
+      scope: ['Interal Tools', 'Operational Efficiency', 'Backend Engineering'],
+    },
+  ],
+};
+
 export const footerContent = {
   technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
   fonts: ['Instrument Seriff', 'IBM Plex Sans', 'JetBrains Mono'],
