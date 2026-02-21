@@ -1,0 +1,40 @@
+---
+import { educationSectionContent } from '@/data/site-content';
+---
+
+<section class="section-block" aria-labelledby="education-heading">
+  <h2 id="education-heading" class="section-heading">{educationSectionContent.heading}</h2>
+  <p class="section-intro">
+    {educationSectionContent.intro}
+  </p>
+
+  <ul class="space-y-8 list-none p-0 m-0">
+    {educationSectionContent.items.map((edu) => (
+      <li class="education-card">
+        <div class="font-mono text-xs tracking-wider text-text-muted uppercase mb-2">
+          {edu.dateRange}
+        </div>
+
+        <h3 class="text-base font-semibold text-text">
+          {edu.degree}
+        </h3>
+
+        <p class="mt-1 text-sm text-text-secondary">
+          {edu.institution} · {edu.location}
+        </p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .education-card {
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-border-subtle);
+    transition: border-color 0.2s;
+  }
+
+  .education-card:hover {
+    border-left-color: var(--color-accent);
+  }
+</style>

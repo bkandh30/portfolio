@@ -152,6 +152,39 @@ export const skillsSectionContent: {
   ],
 };
 
+interface EducationItem {
+  id: string;
+  degree: string;
+  institution: string;
+  location: string;
+  dateRange: string;
+}
+
+export const educationSectionContent: {
+  heading: string;
+  intro: string;
+  items: EducationItem[];
+} = {
+  heading: 'Education',
+  intro: 'Academic background and coursework that shaped my software engineering focus.',
+  items: [
+    {
+      id: 'asu-masters',
+      degree: 'Masters of Computer Science',
+      institution: 'Arizona State University',
+      location: 'Tempe, Arizona',
+      dateRange: '2023 - 2025',
+    },
+    {
+      id: 'amity-bachelors',
+      degree: 'Bachelor of Technology in Computer Science',
+      institution: 'Amity University',
+      location: 'Noida, India',
+      dateRange: '2017 - 2021',
+    },
+  ],
+};
+
 export const footerContent = {
   technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
   fonts: ['Instrument Seriff', 'IBM Plex Sans', 'JetBrains Mono'],
