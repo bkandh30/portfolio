@@ -2,7 +2,7 @@
 import '@/styles/global.css';
 // import BottomNav from '@/components/BottomNav.astro';
 import Footer from '@/components/Footer.astro';
-// import { heroContent } from '@/data/site-content';
+import { heroContent } from '@/data/site-content';
 
 interface Props {
   title: string;
@@ -52,14 +52,14 @@ const isHomepage = Astro.url.pathname === '/';
     <!-- SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
-    <!-- <meta name="author" content={heroContent.name} /> -->
+    <meta name="author" content={heroContent.name} />
     <link rel="canonical" href={canonicalUrl.href} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
-    <!-- <meta property="og:site_name" content={heroContent.name} /> -->
+    <meta property="og:site_name" content={heroContent.name} />
     <meta property="og:url" content={canonicalUrl.href} />
     <meta property="og:image" content={ogImageUrl} />
     {ogType === 'article' && publishedTime && (
