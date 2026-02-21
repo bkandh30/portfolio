@@ -1,0 +1,191 @@
+---
+import { projectsSectionContent } from '@/data/site-content';
+
+const featuredProjects = projectsSectionContent.items.filter((project) => project.featured);
+const otherProjects = projectsSectionContent.items.filter((project) => !project.featured);
+---
+
+<section class="section-block" aria-labelledby="projects-heading">
+  <h2 id="projects-heading" class="section-heading">{projectsSectionContent.heading}</h2>
+  <p class="section-intro">
+    {projectsSectionContent.intro}
+  </p>
+
+  <div class="space-y-12">
+    <!-- Featured Projects -->
+    <div>
+      <h3 class="font-mono text-xs font-medium uppercase tracking-widest text-text-muted mb-6">
+        {projectsSectionContent.featuredLabel}
+      </h3>
+
+      <ul class="space-y-6 list-none p-0 m-0">
+        {featuredProjects.map((project) => (
+          <li class="project-card group">
+            <h4 class="text-base font-semibold text-text transition-colors group-hover:text-accent">
+              {project.title}
+            </h4>
+
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              {project.description}
+            </p>
+
+            <ul class="mt-3 flex flex-wrap gap-1.5 list-none p-0 m-0">
+              {project.technologies.map((tech) => (
+                <li>
+                  <span class="tech-badge">{tech}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-4 flex gap-4">
+              {project.links.demo && (
+                <a
+                  href={project.links.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-link"
+                  aria-label={`View ${project.title} demo (opens in a new tab)`}
+                >
+                  View Project
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 7h10v10" /><path d="M7 17 17 7" />
+                  </svg>
+                </a>
+              )}
+              {project.links.github && (
+                <a
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-link"
+                  aria-label={`View ${project.title} source on GitHub (opens in a new tab)`}
+                >
+                  GitHub
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 7h10v10" /><path d="M7 17 17 7" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Other projects -->
+    <div>
+      <h3 class="font-mono text-xs font-medium uppercase tracking-widest text-text-muted mb-6">
+        {projectsSectionContent.moreLabel}
+      </h3>
+
+      <ul class="space-y-5 list-none p-0 m-0">
+        {otherProjects.map((project) => (
+          <li class="project-card-compact group">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h4 class="text-sm font-semibold text-text transition-colors group-hover:text-accent">
+                  {project.title}
+                </h4>
+                <p class="mt-1 text-sm text-text-secondary">
+                  {project.description}
+                </p>
+              </div>
+              {project.links.github && (
+                <a
+                  href={project.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="shrink-0 text-text-muted transition-colors hover:text-accent motion-reduce:transition-none"
+                  aria-label={`View ${project.title} on GitHub (opens in a new tab)`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 7h10v10" /><path d="M7 17 17 7" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .project-card {
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border-subtle);
+    background: linear-gradient(
+      155deg,
+      color-mix(in srgb, var(--color-bg-surface) 84%, var(--color-bg-raised)),
+      var(--color-bg-surface)
+    );
+    transition: border-color 0.2s, box-shadow 0.3s, transform 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: var(--color-accent);
+    box-shadow:
+      0 7px 22px rgba(0, 0, 0, 0.22),
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .project-card-compact {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .project-card-compact:last-child {
+    border-bottom: none;
+  }
+
+  .tech-badge {
+    display: inline-block;
+    padding: 0.1rem 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-bg-raised) 88%, var(--color-accent-muted));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.25rem;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.15s, gap 0.15s;
+  }
+
+  .project-link:hover {
+    color: var(--color-accent-hover);
+    gap: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card,
+    .project-link {
+      transition: none;
+    }
+
+    .project-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .project-link:hover {
+      gap: 0.35rem;
+    }
+  }
+</style>
