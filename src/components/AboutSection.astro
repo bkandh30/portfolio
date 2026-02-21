@@ -1,0 +1,16 @@
+---
+import { aboutSectionContent } from '@/data/site-content';
+---
+
+<section class="section-block" aria-labelledby="about-heading">
+  <h2 id="about-heading" class="section-heading">{aboutSectionContent.heading}</h2>
+  <p class="section-intro">
+    {aboutSectionContent.intro}
+  </p>
+
+  <div class="space-y-4 text-[0.925rem] leading-[1.7] text-text-secondary">
+    {aboutSectionContent.paragraphs.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+  </div>
+</section>
