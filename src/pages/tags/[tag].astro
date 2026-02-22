@@ -1,0 +1,47 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BackLink from '@/components/BackLink.astro';
+import PostCard from '@/components/PostCard.astro';
+import type { CollectionEntry } from 'astro:content';
+import { getPostCardProps, getPublishedBlogPosts, getTagArchives } from '@/utils/blog';
+
+export async function getStaticPaths() {
+  const allPosts = await getPublishedBlogPosts();
+  const tagArchives = getTagArchives(allPosts);
+
+  return tagArchives.map((archive) => {
+    return {
+      params: { tag: archive.slug },
+      props: { tagLabel: archive.label, posts: archive.posts },
+    };
+  });
+}
+
+const { tagLabel, posts } = Astro.props as {
+  tagLabel: string;
+  posts: CollectionEntry<'blog'>[];
+};
+---
+
+<BaseLayout title={`Posts tagged "${tagLabel}" — Bhavya Kandhari`} description={`All blog posts tagged with "${tagLabel}".`}>
+  <div class="mx-auto max-w-2xl px-5 pt-16 sm:pt-24">
+    <header class="mb-12">
+      <BackLink href="/blog" label="All posts" />
+
+      <h1 class="font-display text-3xl leading-tight tracking-tight text-text">
+        Tagged: <span class="text-accent">{tagLabel}</span>
+      </h1>
+      <p class="mt-2 text-sm text-text-muted">
+        {posts.length} {posts.length === 1 ? 'post' : 'posts'}
+      </p>
+    </header>
+
+    <h2 class="sr-only">Posts tagged {tagLabel}</h2>
+
+    <ul class="list-none p-0 m-0">
+      {posts.map((post) => (
+        <PostCard {...getPostCardProps(post)} />
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
