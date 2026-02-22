@@ -1,0 +1,37 @@
+---
+interface Props {
+  text?: string;
+}
+
+const {
+  text = 'This post is currently in progress. Some sections may be incomplete, and examples can change as the content is reviewed and refined.'
+} = Astro.props;
+---
+
+<aside class="post-under-progress-notice">
+  <p>
+    <strong>Post in progress:</strong> {text}
+  </p>
+</aside>
+
+<style>
+  .post-under-progress-notice {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent-muted) 35%, transparent);
+    border-radius: 0.25rem;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .post-under-progress-notice p {
+    margin: 0;
+  }
+
+  .post-under-progress-notice strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+</style>
