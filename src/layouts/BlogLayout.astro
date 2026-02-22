@@ -1,0 +1,325 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import RelatedPosts from '@/components/RelatedPosts.astro';
+import TagPill from '@/components/TagPill.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import { formatDate } from '@/utils/date';
+import { heroContent } from '@/data/site-content';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  title: string;
+  date: Date;
+  updatedDate?: Date;
+  summary: string;
+  tags: string[];
+  topic?: string;
+  ogImage?: string;
+  readingTime?: string;
+  prevPost?: { slug: string; title: string } | null;
+  nextPost?: { slug: string; title: string } | null;
+  relatedPosts?: Array<{ slug: string; title: string; date: Date; summary: string; tags: string[] }>;
+  headings?: Heading[];
+}
+
+const {
+  title,
+  date,
+  updatedDate,
+  summary,
+  tags,
+  topic,
+  ogImage,
+  readingTime,
+  prevPost,
+  nextPost,
+  relatedPosts = [],
+  headings = [],
+} = Astro.props;
+const hasToc = headings.some((heading) => heading.depth >= 2 && heading.depth <= 3);
+const modifiedDate = updatedDate ?? date;
+
+const formattedDate = formatDate(date, 'long');
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${canonicalUrl}#blog-post`,
+  mainEntityOfPage: canonicalUrl,
+  headline: title,
+  description: summary,
+  datePublished: date.toISOString(),
+  dateModified: modifiedDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: heroContent.name,
+    url: heroContent.links.linkedIn,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: heroContent.name,
+    url: Astro.site?.toString(),
+  },
+  keywords: tags,
+  articleSection: topic,
+};
+---
+
+<BaseLayout
+  title={`${title} — Bhavya Kandhari`}
+  description={summary}
+  ogImage={ogImage}
+  ogType="article"
+  articlePublishedTime={date}
+  articleModifiedTime={modifiedDate}
+  articleTags={tags}
+>
+  <Fragment slot="head">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
+  </Fragment>
+  <div class:list={['blog-layout mx-auto px-5 pt-16 sm:pt-24', hasToc ? 'blog-layout--with-toc' : 'max-w-2xl']}>
+    <article class="blog-article min-w-0">
+      <!-- Back to blog -->
+      <a
+        href="/blog"
+        class="group inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-text-muted transition-colors hover:text-accent"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:-translate-x-0.5 motion-reduce:transition-none motion-reduce:transform-none">
+          <path d="m12 19-7-7 7-7" /><path d="M19 12H5" />
+        </svg>
+        Back to blog
+      </a>
+
+      <!-- Post header -->
+      <header class="mt-8 mb-12">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <time
+            datetime={date.toISOString()}
+            class="font-mono text-xs tracking-wider text-text-muted uppercase"
+          >
+            {formattedDate}
+          </time>
+          {readingTime && (
+            <>
+              <span class="text-border" aria-hidden="true">&middot;</span>
+              <span class="font-mono text-xs tracking-wider text-text-muted">
+                {readingTime}
+              </span>
+            </>
+          )}
+          <span class="text-border" aria-hidden="true">/</span>
+          <ul class="flex flex-wrap gap-1.5 list-none p-0 m-0">
+            {tags.map((tag) => (
+              <li>
+                <TagPill tag={tag} />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <h1 class="font-display text-3xl sm:text-4xl leading-tight tracking-tight text-text">
+          {title}
+        </h1>
+
+        <p class="mt-4 text-base leading-relaxed text-text-secondary">
+          {summary}
+        </p>
+      </header>
+
+      <!-- Article content -->
+      <div class="prose prose-lg max-w-none">
+        <slot />
+      </div>
+
+      <script is:inline>
+        (function() {
+          var copyIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="10" height="10" rx="2"></rect><path d="M5 15V7a2 2 0 0 1 2-2h8"></path></svg>';
+          var checkIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13.5 9.2 18 19 8.5"></path></svg>';
+
+          function fallbackCopy(text) {
+            var textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.setAttribute('readonly', '');
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            textArea.style.pointerEvents = 'none';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            var copied = false;
+            try {
+              copied = document.execCommand('copy');
+            } catch (_error) {
+              copied = false;
+            }
+
+            document.body.removeChild(textArea);
+            return copied;
+          }
+
+          async function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+              return navigator.clipboard.writeText(text)
+                .then(function() { return true; })
+                .catch(function() { return fallbackCopy(text); });
+            }
+
+            return Promise.resolve(fallbackCopy(text));
+          }
+
+          function setButtonState(button, state) {
+            button.dataset.copyState = state;
+            var defaultCopyLabel = button.dataset.copyLabel || 'Copy code';
+
+            if (state === 'copied') {
+              button.innerHTML = checkIcon;
+              button.setAttribute('aria-label', 'Code copied');
+              button.setAttribute('title', 'Copied');
+              return;
+            }
+
+            if (state === 'error') {
+              button.innerHTML = copyIcon;
+              button.setAttribute('aria-label', defaultCopyLabel + ' (copy failed, try again)');
+              button.setAttribute('title', 'Copy failed');
+              return;
+            }
+
+            button.innerHTML = copyIcon;
+            button.setAttribute('aria-label', defaultCopyLabel);
+            button.setAttribute('title', defaultCopyLabel);
+          }
+
+          function enhanceCodeBlocks() {
+            var codeBlocks = document.querySelectorAll('.blog-article .prose pre.astro-code');
+            codeBlocks.forEach(function(pre) {
+              if (!(pre instanceof HTMLElement)) return;
+              if (pre.dataset.copyReady === 'true') return;
+              pre.dataset.copyReady = 'true';
+
+              var parent = pre.parentElement;
+              if (!parent) return;
+
+              var wrapper = document.createElement('div');
+              wrapper.className = 'code-block-wrapper';
+
+              parent.insertBefore(wrapper, pre);
+              wrapper.appendChild(pre);
+
+              var button = document.createElement('button');
+              button.type = 'button';
+              button.className = 'code-copy-button';
+
+              var language = pre.getAttribute('data-language');
+              var label = language ? 'Copy ' + language + ' code' : 'Copy code';
+              button.dataset.copyLabel = label;
+              setButtonState(button, 'idle');
+
+              var resetTimer = 0;
+
+              button.addEventListener('click', function() {
+                var codeElement = pre.querySelector('code');
+                var text = codeElement ? (codeElement.innerText || codeElement.textContent || '') : (pre.innerText || pre.textContent || '');
+
+                if (!text.trim()) return;
+
+                copyText(text).then(function(success) {
+                  setButtonState(button, success ? 'copied' : 'error');
+                  if (resetTimer) {
+                    window.clearTimeout(resetTimer);
+                  }
+
+                  resetTimer = window.setTimeout(function() {
+                    setButtonState(button, 'idle');
+                  }, 1800);
+                });
+              });
+
+              wrapper.appendChild(button);
+            });
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', enhanceCodeBlocks, { once: true });
+          } else {
+            enhanceCodeBlocks();
+          }
+
+          document.addEventListener('astro:page-load', enhanceCodeBlocks);
+        })();
+      </script>
+
+      <!-- Divider -->
+      <hr class="my-16 border-border-subtle" />
+
+      <!-- Post navigation -->
+      <nav class="flex flex-col sm:flex-row justify-between gap-6 mb-12" aria-label="Post navigation">
+        {prevPost ? (
+          <a
+            href={`/blog/${prevPost.slug}`}
+            class="group flex flex-col gap-1"
+          >
+            <span class="font-mono text-xs uppercase tracking-widest text-text-muted">Previous</span>
+            <span class="text-sm text-text-secondary transition-colors group-hover:text-accent">
+              {prevPost.title}
+            </span>
+          </a>
+        ) : <div />}
+
+        {nextPost ? (
+          <a
+            href={`/blog/${nextPost.slug}`}
+            class="group flex flex-col gap-1 sm:text-right sm:items-end"
+          >
+            <span class="font-mono text-xs uppercase tracking-widest text-text-muted">Next</span>
+            <span class="text-sm text-text-secondary transition-colors group-hover:text-accent">
+              {nextPost.title}
+            </span>
+          </a>
+        ) : <div />}
+      </nav>
+
+      <!-- Related posts -->
+      {relatedPosts.length > 0 && (
+        <RelatedPosts posts={relatedPosts} />
+      )}
+    </article>
+
+    <!-- Table of Contents sidebar (desktop only) -->
+    {hasToc && (
+      <aside class="toc-sidebar">
+        <TableOfContents headings={headings} />
+      </aside>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-layout--with-toc {
+    max-width: 56rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .toc-sidebar {
+    display: none;
+  }
+
+  @media (min-width: 1080px) {
+    .blog-layout--with-toc {
+      max-width: 62rem;
+      grid-template-columns: 1fr 16rem;
+    }
+
+    .toc-sidebar {
+      display: block;
+      padding-top: 10rem;
+    }
+  }
+</style>
