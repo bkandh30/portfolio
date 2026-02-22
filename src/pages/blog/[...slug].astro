@@ -1,0 +1,58 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { render, type CollectionEntry } from 'astro:content';
+import { getReadingTime } from '@/utils/reading-time';
+import {
+  assertNoReservedBlogSlugs,
+  getAdjacentPostLinks,
+  getPublishedBlogPosts,
+  getRelatedPosts,
+} from '@/utils/blog';
+
+export async function getStaticPaths() {
+  const sortedPosts = await getPublishedBlogPosts();
+  assertNoReservedBlogSlugs(sortedPosts);
+
+  return sortedPosts.map((post, index) => {
+    const { prevPost, nextPost } = getAdjacentPostLinks(sortedPosts, index);
+    const relatedPosts = getRelatedPosts(sortedPosts, post);
+
+    return {
+      params: { slug: post.id },
+      props: { post, prevPost, nextPost, relatedPosts },
+    };
+  });
+}
+
+const { post, prevPost, nextPost, relatedPosts } = Astro.props as {
+  post: CollectionEntry<'blog'>;
+  prevPost: { slug: string; title: string } | null;
+  nextPost: { slug: string; title: string } | null;
+  relatedPosts: Array<{
+    slug: string;
+    title: string;
+    date: Date;
+    summary: string;
+    tags: string[];
+  }>;
+};
+const { Content, headings } = await render(post);
+const readingTime = getReadingTime(post.body);
+---
+
+<BlogLayout
+  title={post.data.title}
+  date={post.data.date}
+  updatedDate={post.data.updatedDate}
+  summary={post.data.summary}
+  tags={post.data.tags}
+  topic={post.data.topic}
+  ogImage={post.data.ogImage}
+  readingTime={readingTime}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  relatedPosts={relatedPosts}
+  headings={headings}
+>
+  <Content />
+</BlogLayout>
