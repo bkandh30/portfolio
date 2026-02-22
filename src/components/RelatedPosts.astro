@@ -1,0 +1,37 @@
+---
+interface Props {
+  posts: Array<{
+    slug: string;
+    title: string;
+    date: Date;
+    summary: string;
+    tags: string[];
+  }>;
+}
+
+const { posts } = Astro.props;
+---
+
+<aside class="mb-16" aria-label="Related posts">
+  <h2 class="font-mono text-xs uppercase tracking-widest text-text-muted mb-6">
+    Related Posts
+  </h2>
+
+  <ul class="space-y-4 list-none p-0 m-0">
+    {posts.map((post) => (
+      <li>
+        <a
+          href={`/blog/${post.slug}`}
+          class="group block rounded-lg p-4 border border-border-subtle transition-colors hover:border-border hover:bg-bg-surface"
+        >
+          <h3 class="text-sm font-medium text-text-secondary transition-colors group-hover:text-accent">
+            {post.title}
+          </h3>
+          <p class="mt-1 text-xs text-text-muted line-clamp-2">
+            {post.summary}
+          </p>
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
