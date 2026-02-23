@@ -1,0 +1,37 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="og-title og-desc">
+  <title id="og-title">Bhavya Kandhari - Software Engineer</title>
+  <desc id="og-desc">Portfolio and engineering blog covering system design, distributed systems, and software craftsmanship.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111318" />
+      <stop offset="1" stop-color="#1F2330" />
+    </linearGradient>
+    <linearGradient id="accent" x1="180" y1="450" x2="960" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C97D4A" stop-opacity="0.25" />
+      <stop offset="1" stop-color="#D9935E" stop-opacity="0.45" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="940" cy="160" r="280" fill="url(#accent)" />
+  <circle cx="260" cy="560" r="220" fill="url(#accent)" opacity="0.65" />
+
+  <g fill="#E0DCD4">
+    <text x="100" y="240" font-family="'IBM Plex Sans', sans-serif" font-size="26" letter-spacing="5" text-transform="uppercase" opacity="0.9">
+      BHAVYA KANDHARI
+    </text>
+    <text x="100" y="330" font-family="'Instrument Serif', serif" font-size="72" font-weight="400">
+      Software Engineer
+    </text>
+    <text x="100" y="390" font-family="'IBM Plex Sans', sans-serif" font-size="34" opacity="0.85">
+      Portfolio and Engineering Blog
+    </text>
+  </g>
+
+  <rect x="100" y="442" width="520" height="2" fill="#C97D4A" />
+
+  <text x="100" y="502" font-family="'JetBrains Mono', monospace" font-size="22" fill="#8A8B8E" letter-spacing="2">
+    SYSTEM DESIGN  /  DISTRIBUTED SYSTEMS  /  BUILDING IN PUBLIC
+  </text>
+</svg>
